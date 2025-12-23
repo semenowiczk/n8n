@@ -35,20 +35,50 @@
     {
       "parameters": {
         "conditions": {
-          "string": [
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
             {
-              "value1": "={{ $json.routeTo }}",
-              "value2": "COMMAND"
+              "id": "command-rule",
+              "leftValue": "={{ $json.routeTo }}",
+              "rightValue": "COMMAND",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "document-rule",
+              "leftValue": "={{ $json.routeTo }}",
+              "rightValue": "DOCUMENT",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "photo-rule",
+              "leftValue": "={{ $json.routeTo }}",
+              "rightValue": "PHOTO",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
             }
-          ]
-        }
+          ],
+          "combinator": "and"
+        },
+        "fallbackOutput": 3
       },
       "id": "router-003",
       "name": "Router",
       "type": "n8n-nodes-base.switch",
-      "typeVersion": 1,
+      "typeVersion": 3,
       "position": [720, 400],
-      "notes": "Kieruje do odpowiedniego flow: COMMAND / DOCUMENT / PHOTO / CHAT"
+      "notes": "Kieruje do odpowiedniego flow:\n• Output 0: COMMAND\n• Output 1: DOCUMENT\n• Output 2: PHOTO\n• Output 3: CHAT (fallback)"
     },
     {
       "parameters": {
@@ -78,7 +108,10 @@
     },
     "Router": {
       "main": [
-        [{ "node": "Send Command Response", "type": "main", "index": 0 }]
+        [{ "node": "Send Command Response", "type": "main", "index": 0 }],
+        [],
+        [],
+        []
       ]
     }
   },
