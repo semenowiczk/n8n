@@ -1,0 +1,511 @@
+{
+  "name": "K2BUD Unified Agent - Complete System",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "k2bud-agent",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "telegram-webhook-001",
+      "name": "Telegram Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [250, 500],
+      "webhookId": "k2bud-telegram-webhook",
+      "notes": "Trigger - odbiera wiadomości z Telegram"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Load context_manager.js\n$('context_manager.js')"
+      },
+      "id": "context-manager-002",
+      "name": "Context Manager",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [450, 500],
+      "notes": "Zarządza bufonem tekstu i historią konwersacji"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "route-file",
+              "leftValue": "={{ $json.operation }}",
+              "rightValue": "FILE_RECEIVED",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "route-chat",
+              "leftValue": "={{ $json.operation }}",
+              "rightValue": "TEXT_BUFFERED",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "route-command",
+              "leftValue": "={{ $json.operation }}",
+              "rightValue": "COMMAND",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "router-003",
+      "name": "Router - Routing Logic",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [650, 500],
+      "notes": "Rozgałęzienie: plik / rozmowa / komenda"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/getFile",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "file_id",
+              "value": "={{ $json.file.fileId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "download-file-004",
+      "name": "Get File Path from Telegram",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [850, 300],
+      "notes": "Pobiera ścieżkę pliku z Telegram API"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.telegram.org/file/bot{{ $env.TELEGRAM_BOT_TOKEN }}/{{ $json.result.file_path }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "download-binary-005",
+      "name": "Download File Binary",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1050, 300],
+      "notes": "Pobiera plik jako binary data"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Przygotuj dane dla Unified AI Handler\nconst contextData = $node[\"Context Manager\"].json;\nconst fileData = contextData.file;\nconst description = contextData.description || '';\nconst fileName = fileData.fileName || `file_${Date.now()}`;\nconst mimeType = fileData.mimeType || 'application/octet-stream';\n\nreturn {\n  operation: 'FILE_CLASSIFICATION',\n  file: {\n    fileName: fileName,\n    mimeType: mimeType,\n    size: fileData.size,\n    fileId: fileData.fileId,\n    type: fileData.type\n  },\n  caption: description,\n  bufferText: description,\n  binaryData: $input.first().binary\n};"
+      },
+      "id": "prepare-for-ai-006",
+      "name": "Prepare Data for AI",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1250, 300],
+      "notes": "Przygotowanie danych dla Unified AI Handler"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Load unified_ai_handler.js\n$('unified_ai_handler.js')"
+      },
+      "id": "unified-ai-handler-007",
+      "name": "Unified AI Handler",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1450, 300],
+      "notes": "Klasyfikacja dokumentu przez Claude AI"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Map folder path to Google Drive ID\nconst classification = $json.classification;\nconst folderPath = classification.folderPath;\n\n// Load folder mapping\nconst folderMapping = {\n  \"00_DO_SORTOWANIA\": $env.GDRIVE_FOLDER_00 || \"FOLDER_ID_PLACEHOLDER_00\",\n  \"01_ADMINISTRACJA\": $env.GDRIVE_FOLDER_01 || \"FOLDER_ID_PLACEHOLDER_01\",\n  \"01_ADMINISTRACJA/Dokumenty_rejestrowe\": $env.GDRIVE_FOLDER_01_01 || \"FOLDER_ID_PLACEHOLDER_01_01\",\n  \"02_KSIĘGOWOŚĆ\": $env.GDRIVE_FOLDER_02 || \"FOLDER_ID_PLACEHOLDER_02\",\n  \"03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Zdjecia_postep_prac\": $env.GDRIVE_FOLDER_03_01_03_01 || \"FOLDER_ID_PLACEHOLDER_03_01_03_01\",\n  \"03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Faktury_budowa\": $env.GDRIVE_FOLDER_03_01_03_02 || \"FOLDER_ID_PLACEHOLDER_03_01_03_02\"\n  // Add more mappings as needed\n};\n\nconst folderId = folderMapping[folderPath] || folderMapping[\"00_DO_SORTOWANIA\"];\n\nreturn {\n  folderId: folderId,\n  folderPath: folderPath,\n  fileName: classification.fileName,\n  classification: classification,\n  binaryData: $node[\"Prepare Data for AI\"].binary\n};"
+      },
+      "id": "map-folder-008",
+      "name": "Map Folder Path to ID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1650, 300],
+      "notes": "Konwersja ścieżki na Google Drive folder ID"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "upload",
+        "name": "={{ $json.fileName }}",
+        "parents": {
+          "folderId": {
+            "mode": "list",
+            "value": "={{ $json.folderId }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "upload-to-drive-009",
+      "name": "Upload to Google Drive",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [1850, 300],
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "google-drive-credentials",
+          "name": "Google Drive K2BUD"
+        }
+      },
+      "notes": "Upload pliku do Google Drive"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prepare success message\nconst classification = $node[\"Map Folder Path to ID\"].json.classification;\nconst uploadResult = $input.first().json;\nconst fileName = classification.fileName;\nconst folderPath = classification.folderPath;\nconst reasoning = classification.reasoning;\n\nconst message = `✅ **Plik zapisany pomyślnie!**\n\n📁 **Lokalizacja:** ${folderPath}\n📄 **Nazwa:** ${fileName}\n\n💡 **Uzasadnienie:**\n${reasoning}\n\n🔗 **Link:** https://drive.google.com/file/d/${uploadResult.id}`;\n\nreturn {\n  chatId: $node[\"Telegram Webhook\"].json.message.chat.id,\n  message: message,\n  parseMode: 'Markdown'\n};"
+      },
+      "id": "prepare-success-msg-010",
+      "name": "Prepare Success Message",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2050, 300],
+      "notes": "Przygotowanie komunikatu sukcesu"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "send-telegram-response-011",
+      "name": "Send Telegram Response",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [2250, 500],
+      "credentials": {
+        "telegramApi": {
+          "id": "telegram-bot-credentials",
+          "name": "Telegram Bot K2BUD"
+        }
+      },
+      "notes": "Wysyła odpowiedź do użytkownika"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Handle chat conversation\nconst contextData = $node[\"Context Manager\"].json;\nconst text = contextData.bufferText;\nconst conversationHistory = contextData.context?.conversationHistory || [];\n\nreturn {\n  operation: 'CHAT',\n  text: text,\n  message: text,\n  conversationHistory: conversationHistory\n};"
+      },
+      "id": "prepare-for-chat-012",
+      "name": "Prepare for Chat",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 500],
+      "notes": "Przygotowanie danych dla chat"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Load unified_ai_handler.js for chat\n$('unified_ai_handler.js')"
+      },
+      "id": "unified-ai-chat-013",
+      "name": "Unified AI Handler (Chat)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1050, 500],
+      "notes": "Obsługa rozmowy przez Claude AI"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prepare chat response\nconst aiResponse = $input.first().json;\nconst chatId = $node[\"Telegram Webhook\"].json.message.chat.id;\nconst message = aiResponse.response || aiResponse.message || 'Przepraszam, wystąpił błąd.';\n\nreturn {\n  chatId: chatId,\n  message: message,\n  conversationHistory: aiResponse.conversationHistory || []\n};"
+      },
+      "id": "prepare-chat-response-014",
+      "name": "Prepare Chat Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1250, 500],
+      "notes": "Przygotowanie odpowiedzi chat"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Handle commands (/help, /status, /archive)\nconst contextData = $node[\"Context Manager\"].json;\nconst command = contextData.command;\nconst args = contextData.args || [];\n\nreturn {\n  operation: 'COMMAND',\n  command: command,\n  args: args\n};"
+      },
+      "id": "prepare-for-command-015",
+      "name": "Prepare for Command",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [850, 700],
+      "notes": "Przygotowanie danych dla komend"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Load unified_ai_handler.js for commands\n$('unified_ai_handler.js')"
+      },
+      "id": "unified-ai-command-016",
+      "name": "Unified AI Handler (Command)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1050, 700],
+      "notes": "Obsługa komend"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prepare command response\nconst commandResponse = $input.first().json;\nconst chatId = $node[\"Telegram Webhook\"].json.message.chat.id;\nconst message = commandResponse.response || 'Komenda wykonana.';\n\nreturn {\n  chatId: chatId,\n  message: message\n};"
+      },
+      "id": "prepare-command-response-017",
+      "name": "Prepare Command Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1250, 700],
+      "notes": "Przygotowanie odpowiedzi komendy"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Error handler\nconst error = $input.first().json.error || 'Nieznany błąd';\nconst chatId = $node[\"Telegram Webhook\"].json?.message?.chat?.id || 'unknown';\n\nreturn {\n  chatId: chatId,\n  message: `❌ **Wystąpił błąd:**\\n\\n${error}\\n\\nSpróbuj ponownie lub skontaktuj się z administratorem.`\n};"
+      },
+      "id": "error-handler-018",
+      "name": "Error Handler",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1850, 700],
+      "notes": "Obsługa błędów"
+    }
+  ],
+  "connections": {
+    "Telegram Webhook": {
+      "main": [
+        [
+          {
+            "node": "Context Manager",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Context Manager": {
+      "main": [
+        [
+          {
+            "node": "Router - Routing Logic",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Router - Routing Logic": {
+      "main": [
+        [
+          {
+            "node": "Get File Path from Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare for Chat",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare for Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get File Path from Telegram": {
+      "main": [
+        [
+          {
+            "node": "Download File Binary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File Binary": {
+      "main": [
+        [
+          {
+            "node": "Prepare Data for AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Data for AI": {
+      "main": [
+        [
+          {
+            "node": "Unified AI Handler",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Unified AI Handler": {
+      "main": [
+        [
+          {
+            "node": "Map Folder Path to ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Map Folder Path to ID": {
+      "main": [
+        [
+          {
+            "node": "Upload to Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload to Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Prepare Success Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Success Message": {
+      "main": [
+        [
+          {
+            "node": "Send Telegram Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare for Chat": {
+      "main": [
+        [
+          {
+            "node": "Unified AI Handler (Chat)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Unified AI Handler (Chat)": {
+      "main": [
+        [
+          {
+            "node": "Prepare Chat Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Chat Response": {
+      "main": [
+        [
+          {
+            "node": "Send Telegram Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare for Command": {
+      "main": [
+        [
+          {
+            "node": "Unified AI Handler (Command)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Unified AI Handler (Command)": {
+      "main": [
+        [
+          {
+            "node": "Prepare Command Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Command Response": {
+      "main": [
+        [
+          {
+            "node": "Send Telegram Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": {
+    "contexts": {}
+  },
+  "tags": [
+    {
+      "name": "k2bud",
+      "id": "k2bud-tag"
+    },
+    {
+      "name": "telegram",
+      "id": "telegram-tag"
+    },
+    {
+      "name": "ai",
+      "id": "ai-tag"
+    },
+    {
+      "name": "document-management",
+      "id": "doc-mgmt-tag"
+    }
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-12-23T00:00:00.000Z",
+  "versionId": "1.0.0"
+}

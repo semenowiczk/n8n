@@ -1,0 +1,255 @@
+{
+  "description": "Mapowanie folderów K2BUD na Google Drive IDs",
+  "version": "1.0",
+  "lastUpdated": "2024-12-23",
+  "folders": {
+    "00_DO_SORTOWANIA": {
+      "id": "FOLDER_ID_PLACEHOLDER_00",
+      "path": "00_DO_SORTOWANIA",
+      "description": "Dokumenty do ręcznego posortowania"
+    },
+    "01_ADMINISTRACJA": {
+      "id": "FOLDER_ID_PLACEHOLDER_01",
+      "path": "01_ADMINISTRACJA",
+      "description": "Dokumenty administracyjne spółki",
+      "subfolders": {
+        "Dokumenty_rejestrowe": {
+          "id": "FOLDER_ID_PLACEHOLDER_01_01",
+          "path": "01_ADMINISTRACJA/Dokumenty_rejestrowe"
+        },
+        "Pelnomocnictwa": {
+          "id": "FOLDER_ID_PLACEHOLDER_01_02",
+          "path": "01_ADMINISTRACJA/Pelnomocnictwa"
+        },
+        "Uchwaly": {
+          "id": "FOLDER_ID_PLACEHOLDER_01_03",
+          "path": "01_ADMINISTRACJA/Uchwaly"
+        }
+      }
+    },
+    "02_KSIĘGOWOŚĆ": {
+      "id": "FOLDER_ID_PLACEHOLDER_02",
+      "path": "02_KSIĘGOWOŚĆ",
+      "description": "Dokumenty księgowe",
+      "subfolders": {
+        "Faktury": {
+          "id": "FOLDER_ID_PLACEHOLDER_02_01",
+          "path": "02_KSIĘGOWOŚĆ/Faktury"
+        },
+        "Umowy": {
+          "id": "FOLDER_ID_PLACEHOLDER_02_02",
+          "path": "02_KSIĘGOWOŚĆ/Umowy"
+        },
+        "Deklaracje_podatkowe": {
+          "id": "FOLDER_ID_PLACEHOLDER_02_03",
+          "path": "02_KSIĘGOWOŚĆ/Deklaracje_podatkowe"
+        }
+      }
+    },
+    "03_PROJEKTY": {
+      "id": "FOLDER_ID_PLACEHOLDER_03",
+      "path": "03_PROJEKTY",
+      "description": "Wszystkie projekty deweloperskie",
+      "subfolders": {
+        "Projekt_01_Agatowa_Sieroslaw": {
+          "id": "FOLDER_ID_PLACEHOLDER_03_01",
+          "path": "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw",
+          "description": "GŁÓWNY PROJEKT - Budowa domu Agatowa, Sieroslawice",
+          "subfolders": {
+            "00_Dzialka": {
+              "id": "FOLDER_ID_PLACEHOLDER_03_01_00",
+              "path": "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/00_Dzialka",
+              "description": "Dokumenty działki - akty, geodezja, mapy"
+            },
+            "01_Projekty_budowlane": {
+              "id": "FOLDER_ID_PLACEHOLDER_03_01_01",
+              "path": "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/01_Projekty_budowlane",
+              "description": "Projekty architektoniczne i konstrukcyjne"
+            },
+            "02_Pozwolenia": {
+              "id": "FOLDER_ID_PLACEHOLDER_03_01_02",
+              "path": "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/02_Pozwolenia",
+              "description": "Pozwolenia budowlane, zgłoszenia"
+            },
+            "03_Realizacja": {
+              "id": "FOLDER_ID_PLACEHOLDER_03_01_03",
+              "path": "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja",
+              "description": "Dokumenty z realizacji budowy",
+              "subfolders": {
+                "Zdjecia_postep_prac": {
+                  "id": "FOLDER_ID_PLACEHOLDER_03_01_03_01",
+                  "path": "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Zdjecia_postep_prac",
+                  "description": "⭐ NAJCZĘŚCIEJ UŻYWANY - Zdjęcia postępu prac budowlanych",
+                  "tags": ["hot", "photos", "construction"]
+                },
+                "Faktury_budowa": {
+                  "id": "FOLDER_ID_PLACEHOLDER_03_01_03_02",
+                  "path": "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Faktury_budowa",
+                  "description": "Faktury za materiały i robociznę",
+                  "tags": ["invoices", "construction"]
+                },
+                "Umowy_wykonawcy": {
+                  "id": "FOLDER_ID_PLACEHOLDER_03_01_03_03",
+                  "path": "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Umowy_wykonawcy",
+                  "description": "Umowy z wykonawcami"
+                },
+                "Protokoly_odbioru": {
+                  "id": "FOLDER_ID_PLACEHOLDER_03_01_03_04",
+                  "path": "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Protokoly_odbioru",
+                  "description": "Protokoły odbioru prac"
+                }
+              }
+            },
+            "04_Odbiory": {
+              "id": "FOLDER_ID_PLACEHOLDER_03_01_04",
+              "path": "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/04_Odbiory",
+              "description": "Odbiory końcowe, certyfikaty, atesty"
+            },
+            "05_Gwarancje": {
+              "id": "FOLDER_ID_PLACEHOLDER_03_01_05",
+              "path": "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/05_Gwarancje",
+              "description": "Gwarancje i instrukcje obsługi"
+            }
+          }
+        }
+      }
+    },
+    "04_PRAWNE": {
+      "id": "FOLDER_ID_PLACEHOLDER_04",
+      "path": "04_PRAWNE",
+      "description": "Dokumenty prawne",
+      "subfolders": {
+        "Umowy": {
+          "id": "FOLDER_ID_PLACEHOLDER_04_01",
+          "path": "04_PRAWNE/Umowy"
+        },
+        "Sprawy_sadowe": {
+          "id": "FOLDER_ID_PLACEHOLDER_04_02",
+          "path": "04_PRAWNE/Sprawy_sadowe"
+        },
+        "Opinie_prawne": {
+          "id": "FOLDER_ID_PLACEHOLDER_04_03",
+          "path": "04_PRAWNE/Opinie_prawne"
+        }
+      }
+    },
+    "05_MARKETING": {
+      "id": "FOLDER_ID_PLACEHOLDER_05",
+      "path": "05_MARKETING",
+      "description": "Materiały marketingowe",
+      "subfolders": {
+        "Materialy_promocyjne": {
+          "id": "FOLDER_ID_PLACEHOLDER_05_01",
+          "path": "05_MARKETING/Materialy_promocyjne"
+        },
+        "Oferty": {
+          "id": "FOLDER_ID_PLACEHOLDER_05_02",
+          "path": "05_MARKETING/Oferty"
+        },
+        "Zdjecia_marketingowe": {
+          "id": "FOLDER_ID_PLACEHOLDER_05_03",
+          "path": "05_MARKETING/Zdjecia_marketingowe"
+        }
+      }
+    },
+    "06_SZABLONY": {
+      "id": "FOLDER_ID_PLACEHOLDER_06",
+      "path": "06_SZABLONY",
+      "description": "Wzory dokumentów"
+    },
+    "07_ARCHIWUM": {
+      "id": "FOLDER_ID_PLACEHOLDER_07",
+      "path": "07_ARCHIWUM",
+      "description": "Stare dokumenty"
+    },
+    "08_IT_INFRASTRUKTURA": {
+      "id": "FOLDER_ID_PLACEHOLDER_08",
+      "path": "08_IT_INFRASTRUKTURA",
+      "description": "Dokumentacja IT",
+      "subfolders": {
+        "Konfiguracje": {
+          "id": "FOLDER_ID_PLACEHOLDER_08_01",
+          "path": "08_IT_INFRASTRUKTURA/Konfiguracje"
+        },
+        "Backupy": {
+          "id": "FOLDER_ID_PLACEHOLDER_08_02",
+          "path": "08_IT_INFRASTRUKTURA/Backupy"
+        }
+      }
+    },
+    "Archiwum_Telegram": {
+      "id": "FOLDER_ID_PLACEHOLDER_TELEGRAM",
+      "path": "Archiwum_Telegram",
+      "description": "Uniwersalne archiwum dla plików spoza struktury K2BUD",
+      "subfolders": {
+        "Obrazy": {
+          "id": "FOLDER_ID_PLACEHOLDER_TELEGRAM_01",
+          "path": "Archiwum_Telegram/Obrazy"
+        },
+        "Dokumenty": {
+          "id": "FOLDER_ID_PLACEHOLDER_TELEGRAM_02",
+          "path": "Archiwum_Telegram/Dokumenty"
+        },
+        "Filmy": {
+          "id": "FOLDER_ID_PLACEHOLDER_TELEGRAM_03",
+          "path": "Archiwum_Telegram/Filmy"
+        },
+        "Audio": {
+          "id": "FOLDER_ID_PLACEHOLDER_TELEGRAM_04",
+          "path": "Archiwum_Telegram/Audio"
+        }
+      }
+    }
+  },
+  "pathToId": {
+    "00_DO_SORTOWANIA": "FOLDER_ID_PLACEHOLDER_00",
+    "01_ADMINISTRACJA": "FOLDER_ID_PLACEHOLDER_01",
+    "01_ADMINISTRACJA/Dokumenty_rejestrowe": "FOLDER_ID_PLACEHOLDER_01_01",
+    "01_ADMINISTRACJA/Pelnomocnictwa": "FOLDER_ID_PLACEHOLDER_01_02",
+    "01_ADMINISTRACJA/Uchwaly": "FOLDER_ID_PLACEHOLDER_01_03",
+    "02_KSIĘGOWOŚĆ": "FOLDER_ID_PLACEHOLDER_02",
+    "02_KSIĘGOWOŚĆ/Faktury": "FOLDER_ID_PLACEHOLDER_02_01",
+    "02_KSIĘGOWOŚĆ/Umowy": "FOLDER_ID_PLACEHOLDER_02_02",
+    "02_KSIĘGOWOŚĆ/Deklaracje_podatkowe": "FOLDER_ID_PLACEHOLDER_02_03",
+    "03_PROJEKTY": "FOLDER_ID_PLACEHOLDER_03",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw": "FOLDER_ID_PLACEHOLDER_03_01",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/00_Dzialka": "FOLDER_ID_PLACEHOLDER_03_01_00",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/01_Projekty_budowlane": "FOLDER_ID_PLACEHOLDER_03_01_01",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/02_Pozwolenia": "FOLDER_ID_PLACEHOLDER_03_01_02",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja": "FOLDER_ID_PLACEHOLDER_03_01_03",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Zdjecia_postep_prac": "FOLDER_ID_PLACEHOLDER_03_01_03_01",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Faktury_budowa": "FOLDER_ID_PLACEHOLDER_03_01_03_02",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Umowy_wykonawcy": "FOLDER_ID_PLACEHOLDER_03_01_03_03",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Protokoly_odbioru": "FOLDER_ID_PLACEHOLDER_03_01_03_04",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/04_Odbiory": "FOLDER_ID_PLACEHOLDER_03_01_04",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/05_Gwarancje": "FOLDER_ID_PLACEHOLDER_03_01_05",
+    "04_PRAWNE": "FOLDER_ID_PLACEHOLDER_04",
+    "04_PRAWNE/Umowy": "FOLDER_ID_PLACEHOLDER_04_01",
+    "04_PRAWNE/Sprawy_sadowe": "FOLDER_ID_PLACEHOLDER_04_02",
+    "04_PRAWNE/Opinie_prawne": "FOLDER_ID_PLACEHOLDER_04_03",
+    "05_MARKETING": "FOLDER_ID_PLACEHOLDER_05",
+    "05_MARKETING/Materialy_promocyjne": "FOLDER_ID_PLACEHOLDER_05_01",
+    "05_MARKETING/Oferty": "FOLDER_ID_PLACEHOLDER_05_02",
+    "05_MARKETING/Zdjecia_marketingowe": "FOLDER_ID_PLACEHOLDER_05_03",
+    "06_SZABLONY": "FOLDER_ID_PLACEHOLDER_06",
+    "07_ARCHIWUM": "FOLDER_ID_PLACEHOLDER_07",
+    "08_IT_INFRASTRUKTURA": "FOLDER_ID_PLACEHOLDER_08",
+    "08_IT_INFRASTRUKTURA/Konfiguracje": "FOLDER_ID_PLACEHOLDER_08_01",
+    "08_IT_INFRASTRUKTURA/Backupy": "FOLDER_ID_PLACEHOLDER_08_02",
+    "Archiwum_Telegram": "FOLDER_ID_PLACEHOLDER_TELEGRAM",
+    "Archiwum_Telegram/Obrazy": "FOLDER_ID_PLACEHOLDER_TELEGRAM_01",
+    "Archiwum_Telegram/Dokumenty": "FOLDER_ID_PLACEHOLDER_TELEGRAM_02",
+    "Archiwum_Telegram/Filmy": "FOLDER_ID_PLACEHOLDER_TELEGRAM_03",
+    "Archiwum_Telegram/Audio": "FOLDER_ID_PLACEHOLDER_TELEGRAM_04"
+  },
+  "instructions": {
+    "setup": "Aby skonfigurować mapowanie:",
+    "steps": [
+      "1. Utwórz strukturę folderów w Google Drive według planu",
+      "2. Dla każdego folderu skopiuj jego ID z URL (format: https://drive.google.com/drive/folders/FOLDER_ID)",
+      "3. Zamień wszystkie FOLDER_ID_PLACEHOLDER_XX na rzeczywiste ID",
+      "4. Zapisz plik i zaimportuj do n8n workflow"
+    ],
+    "note": "Ten plik może być również użyty w node 'Function' w n8n do dynamicznego mapowania ścieżek na ID folderów"
+  }
+}
