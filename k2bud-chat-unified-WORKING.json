@@ -1,0 +1,93 @@
+{
+  "name": "K2BUD + Chat Unified Agent (WORKING)",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": ["message"],
+        "additionalFields": {}
+      },
+      "id": "telegram-trigger-001",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [250, 400],
+      "webhookId": "k2bud-unified-webhook",
+      "credentials": {
+        "telegramApi": {
+          "id": "x9zc7iKAbA62wLsD",
+          "name": "Telegramaccount2"
+        }
+      },
+      "notes": "Odbiera wszystkie wiadomości z Telegram (tekst, zdjęcia, dokumenty)"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ═══════════════════════════════════════════════════════════════\n// RATE LIMIT & COMMANDS + DOCUMENT DETECTION (UNIFIED)\n// Łączy logikę z Chat Bot + wykrywanie dokumentów z K2BUD\n// ═══════════════════════════════════════════════════════════════\n\nconst telegramData = $input.first().json;\nconst chatId = telegramData.message.chat.id;\nconst userMessage = telegramData.message.text || telegramData.message.caption || '';\nconst userName = telegramData.message.from.first_name || 'User';\nconst hasPhoto = telegramData.message.photo && telegramData.message.photo.length > 0;\nconst hasDocument = telegramData.message.document;\n\n// ═══════════════════════════════════════════════════════════════\n// RATE LIMITING (z Chat Bot)\n// ═══════════════════════════════════════════════════════════════\nconst now = Date.now();\nconst globalData = $getWorkflowStaticData('global'); // ✅ Poprawna składnia\nconst rateLimits = globalData.rateLimits || {};\nconst userKey = `limit_${chatId}`;\nconst userLimit = rateLimits[userKey] || { count: 0, resetAt: now + 60000 };\n\nif (now >= userLimit.resetAt) {\n  userLimit.count = 0;\n  userLimit.resetAt = now + 60000;\n}\n\nif (userLimit.count >= 10) {\n  const waitSeconds = Math.ceil((userLimit.resetAt - now) / 1000);\n  return [{\n    json: {\n      routeTo: 'COMMAND',\n      isCommand: true,\n      chatId: chatId,\n      response: `⏱️ Wysłałeś za dużo wiadomości!\\n\\nLimit: 10 wiadomości/minutę\\nSpróbuj ponownie za ${waitSeconds} sekund.`\n    }\n  }];\n}\n\nuserLimit.count++;\nrateLimits[userKey] = userLimit;\nglobalData.rateLimits = rateLimits;\n\n// ═══════════════════════════════════════════════════════════════\n// WYKRYWANIE DOKUMENTÓW (nowe - z K2BUD)\n// ═══════════════════════════════════════════════════════════════\nif (hasDocument) {\n  const document = telegramData.message.document;\n  const fileName = document.file_name || 'document';\n  const mimeType = document.mime_type || '';\n  \n  // Sprawdź czy to dokument do klasyfikacji (PDF, DOCX, obrazy)\n  const isClassifiableDocument = \n    mimeType.includes('pdf') ||\n    mimeType.includes('word') ||\n    mimeType.includes('document') ||\n    mimeType.includes('image') ||\n    fileName.match(/\\.(pdf|docx?|xlsx?|jpg|jpeg|png|gif)$/i);\n  \n  if (isClassifiableDocument) {\n    return [{\n      json: {\n        routeTo: 'DOCUMENT',\n        isCommand: false,\n        hasDocument: true,\n        hasPhoto: false,\n        document: document,\n        chatId: chatId,\n        userName: userName,\n        userMessage: userMessage || ''\n      }\n    }];\n  } else {\n    // Nieobsługiwany typ dokumentu\n    return [{\n      json: {\n        routeTo: 'COMMAND',\n        isCommand: true,\n        chatId: chatId,\n        response: `📎 Otrzymałem plik: ${fileName}\\n\\nNiestety ten typ pliku (${mimeType}) nie jest jeszcze obsługiwany.\\n\\nObsługuję: PDF, DOCX, XLSX, JPG, PNG`\n      }\n    }];\n  }\n}\n\n// ═══════════════════════════════════════════════════════════════\n// WYKRYWANIE ZDJĘĆ (z Chat Bot)\n// ═══════════════════════════════════════════════════════════════\nif (hasPhoto) {\n  const photo = telegramData.message.photo[telegramData.message.photo.length - 1];\n  const photoFileId = photo.file_id;\n  \n  return [{\n    json: {\n      routeTo: 'PHOTO',\n      isCommand: false,\n      hasPhoto: true,\n      hasDocument: false,\n      photoFileId: photoFileId,\n      chatId: chatId,\n      userName: userName,\n      userMessage: userMessage || 'Co widzisz na tym zdjęciu?',\n      conversationHistory: globalData[`chat_${chatId}`] || []\n    }\n  }];\n}\n\n// ═══════════════════════════════════════════════════════════════\n// SPRAWDZENIE PUSTEJ WIADOMOŚCI\n// ═══════════════════════════════════════════════════════════════\nif (!userMessage || userMessage.trim() === '') {\n  return [{\n    json: {\n      routeTo: 'COMMAND',\n      isCommand: true,\n      chatId: chatId,\n      response: '🤔 Nie otrzymałem żadnej wiadomości tekstowej. Napisz coś, a chętnie odpowiem!'\n    }\n  }];\n}\n\n// ═══════════════════════════════════════════════════════════════\n// KOMENDY (z Chat Bot)\n// ═══════════════════════════════════════════════════════════════\nconst conversationHistory = globalData[`chat_${chatId}`] || [];\n\nif (userMessage === '/start' || userMessage === '/help') {\n  return [{\n    json: {\n      routeTo: 'COMMAND',\n      isCommand: true,\n      chatId: chatId,\n      response: `👋 Cześć ${userName}!\\n\\nJestem K2BUD Unified Agent - łączę:
+\\n• 🤖 Chat z Claude AI (pytania, programowanie)\\n• 📸 Analiza zdjęć (Claude Vision)\\n• 📁 Klasyfikacja dokumentów (auto-upload do Drive)\\n\\n📝 Komendy:\\n/clear - wyczyść historię\\n/stats - pokaż statystyki\\n/help - ta wiadomość\\n\\n💡 Wyślij:\\n• Tekst - zadaj pytanie\\n• Zdjęcie - przeanalizuję\\n• PDF/DOCX - sklasyfikuję i zapiszę na Drive`\n    }\n  }];\n}\n\nif (userMessage === '/clear' || userMessage === '/reset') {\n  delete globalData[`chat_${chatId}`];\n  return [{\n    json: {\n      routeTo: 'COMMAND',\n      isCommand: true,\n      chatId: chatId,\n      response: '🧹 Historia konwersacji została wyczyszczona!\\n\\nMożesz zacząć nową rozmowę.'\n    }\n  }];\n}\n\nif (userMessage === '/stats') {\n  const userMessages = conversationHistory.filter(m => m.role === 'user').length;\n  const assistantMessages = conversationHistory.filter(m => m.role === 'assistant').length;\n  const totalChars = conversationHistory.reduce((sum, m) => sum + (m.content?.length || 0), 0);\n  const documentsCount = globalData[`documents_${chatId}`] || 0;\n  \n  return [{\n    json: {\n      routeTo: 'COMMAND',\n      isCommand: true,\n      chatId: chatId,\n      response: `📊 Statystyki K2BUD Unified Agent:\\n\\n💬 Konwersacja:\\n• Wszystkich wiadomości: ${conversationHistory.length}\\n• Twoich wiadomości: ${userMessages}\\n• Odpowiedzi Claude: ${assistantMessages}\\n• Znaków w historii: ${totalChars}\\n\\n📁 Dokumenty:\\n• Zarchiwizowanych: ${documentsCount}\\n\\n⏱️ Rate limit:\\n• W tej minucie: ${userLimit.count}/10`\n    }\n  }];\n}\n\n// ═══════════════════════════════════════════════════════════════\n// TEKST - CHAT (z Chat Bot)\n// ═══════════════════════════════════════════════════════════════\nconst cleanedHistory = conversationHistory.filter(m => m.content && m.content.trim() !== '');\nglobalData[`chat_${chatId}`] = cleanedHistory;\n\nif (userMessage && userMessage.trim() !== '') {\n  cleanedHistory.push({\n    role: 'user',\n    content: userMessage\n  });\n}\n\nif (cleanedHistory.length > 20) {\n  const toRemove = cleanedHistory.length - 20;\n  cleanedHistory.splice(0, toRemove);\n}\n\nglobalData[`chat_${chatId}`] = cleanedHistory;\n\nreturn [{\n  json: {\n    routeTo: 'CHAT',\n    isCommand: false,\n    hasPhoto: false,\n    hasDocument: false,\n    chatId: chatId,\n    userName: userName,\n    conversationHistory: cleanedHistory,\n    currentMessage: userMessage\n  }\n}];"
+      },
+      "id": "rate-limit-002",
+      "name": "Rate Limit & Routing",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 400],
+      "notes": "Rate limiting + wykrywanie typu wiadomości + komendy"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.routeTo }}",
+              "value2": "COMMAND"
+            }
+          ]
+        }
+      },
+      "id": "router-003",
+      "name": "Router",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [720, 400],
+      "notes": "Kieruje do odpowiedniego flow: COMMAND / DOCUMENT / PHOTO / CHAT"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.chatId }}",
+        "text": "={{ $json.response }}",
+        "additionalFields": {}
+      },
+      "id": "send-command-004",
+      "name": "Send Command Response",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [960, 200],
+      "credentials": {
+        "telegramApi": {
+          "id": "x9zc7iKAbA62wLsD",
+          "name": "Telegramaccount2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [[{ "node": "Rate Limit & Routing", "type": "main", "index": 0 }]]
+    },
+    "Rate Limit & Routing": {
+      "main": [[{ "node": "Router", "type": "main", "index": 0 }]]
+    },
+    "Router": {
+      "main": [
+        [{ "node": "Send Command Response", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "rateLimits": {},
+    "contexts": {}
+  },
+  "tags": ["k2bud", "chat", "vision", "documents", "unified"]
+}
