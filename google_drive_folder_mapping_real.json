@@ -1,0 +1,79 @@
+{
+  "description": "Mapowanie folderów K2BUD na Google Drive IDs - RZECZYWISTE DANE",
+  "version": "2.0",
+  "lastUpdated": "2024-12-23",
+  "source": "Extracted from working K2BUD workflow",
+  "pathToId": {
+    "00_DO_SORTOWANIA": "1glm8ZfM4d2Kh-uu3xhaJFZDvmrd6PZma",
+    "01_ADMINISTRACJA": "1xuKCV94fIMiLX0h3wFnQIDtozW03aAVP",
+    "01_ADMINISTRACJA/Dokumenty_rejestrowe": "1XmQ_u6LabuUgD792SSBhxHAqo4rAj03Y",
+    "01_ADMINISTRACJA/Pelnomocnictwa": "1_52xWaQ9XDezlRHnk20FPbxUPLv6QhKjP",
+    "01_ADMINISTRACJA/Uchwaly": "1rvVNY9jzHGkJwLb15_17kCFlgsTEfd4o",
+    "01_ADMINISTRACJA/Umowy_wspolnikow": "13r6wIhCGGDMeYDJZygl_Ubn7OaxQvq9R",
+    "01_ADMINISTRACJA/Umowa_spolki": "1G5SztjgMEmBlDdi8z8lXQ9QXJcxTTGgs",
+    "02_KSIĘGOWOŚĆ": "1SWvamOTF8O-7Byx_gWfwGMJEYVLQaKQW",
+    "03_PROJEKTY": "126jZTPIXckh2XgYv1mAz4ld2nz5JmuIU",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw": "15rJkHssy0Wnb-gqttdnHq396jHeZib87",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/00_Dzialka": "1s1KowK2ADiUJXR96WDDJgdpVszm8URzZ",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/00_Dzialka/Akty_notarialne": "1J9yGH1MKVv1l7RJAnMack3llONxy44g0",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/00_Dzialka/WZ_warunki_zabudowy": "1xdwt3F_HHhUUo1e7w2fAwJgikFptnTpF",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/01_Projekty_budowlane": "1dNI02jZNNaL75OjfEXFtY580T_Np9yqg",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/01_Projekty_budowlane/Projekt_architektoniczny": "1k0PmFrf0CHOzZTLsCCX45fEtTBEAhzP4",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/01_Projekty_budowlane/Projekt_konstrukcyjny": "1nsURoQR0ZqIilT0TWbYIwo2Yi5MkKRSm",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/01_Projekty_budowlane/Projekt_zagospodarowania": "1QkP1xlaY52bNo4ew5lbd229KY5BbqH09",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/01_Projekty_budowlane/Projekty_branzowe": "1LcUIXhl9hGboeHBVnw8E8Y2Ubzb5AofV",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/02_Pozwolenia": "1hf4aqrRnFHpE4FQSViuLNKEa9Mgqi6Io",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/02_Pozwolenia/Pozwolenie_na_budowe": "1WzaZb2b-_6C9zE5l-dmm7mXLL_MYeRyu",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/02_Pozwolenia/Pozwolenie_na_uzytkowanie": "1JmZw-WmNyzEtu1PY2E2QCGBvvuosKHhW",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/02_Pozwolenia/Decyzje_administracyjne": "1a5pWowRMghVhNAmikRMj4Js5TkrmUv65",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja": "15f_wkE1WUFTZ-IrUOcQ4zAdliMo-qtGD",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Zdjecia_postep_prac": "1C4VcnP2stSpB2mMK8-zGs5XD47Ya1yLB",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Protokoly_odbioru": "1Qxoo-f7_uODzinX1u51cdDnFE9Gcx2TF",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Dziennik_budowy": "10Cj3hLPz7JQFP12BQr5dgqC2m65LU-3N",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Faktury_budowa": "11Bso5G4m9Tm6eGwl0hTEYjMs9dyGGZCU",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Dokumentacja_wykonawcza": "1auGKq9Z8ggsUThu0X9KFTtQ-M5cb0Jkl",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Kosztorys": "1aGnI-SzHhRcYh_21GssMGovEXVfZU4yZ",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Korespondencja": "1RWEHsZVpBxtd4Ym3Px_lbFLzMP2PH4br",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Atesty_certyfikaty": "1BtCaqYAERAgnQV7VROCs0howeGSEiRkM",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/04_Marketing": "1EFQlkZnC9yka8TuZkWwvXXDaH6GOUHss",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/04_Marketing/Materialy_promocyjne": "1ZAhC8GSrtQ-nbqkrzJNCUSlbGy6u_obI",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/04_Marketing/Wizualizacje_3D": "1VC8-cIW9K5vy9hl6UBID5NC_rB-VkJjU",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/04_Marketing/Zdjecia_promocyjne": "1ihIAzTY9z6yi4E4oOJ8fRSRAgxmBOzNV",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/04_Marketing/Ulotki_broszury": "12aSeLSobnHdMQBPuKp09Cg50OqXI8aec",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/04_Marketing/Ogloszenia_sprzedazy": "13Ou4Uc5a1owXovDJ7aB8KeWwES2-2kpA",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/05_Klienci": "1uRAQsQkoM2ILwFzTkKQD_PY2p_hLBcd9",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/05_Klienci/Umowy_deweloperskie": "1ohrVOQChItZc0jI2IENppFzknuyDiOlQ",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/05_Klienci/Umowy_przedwstepne": "1ksk2qtuDIJ9sv7Z7cLIQHSiZKHmWQOMZ",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/05_Klienci/Rezerwacje": "1smrUGoHFDQsjbkSryEVx7BbTbyVuXGh2",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/05_Klienci/Leady": "1Av_jqgj2UF7vaefpvhEFhdViYkfunJzP",
+    "03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/06_Gwarancje_serwis": "1HADnSN0i-ybDRUgTujYM-F97M6l2B0CP",
+    "04_PRAWNE": "1nfczePyz7Gne06gR5DALtkAImJDCMe0Z",
+    "05_MARKETING": "1U6ugl9GWOknJOFrsFkpSjIDaGn0L3EI6",
+    "05_MARKETING/Materialy_promocyjne": "1ZAhC8GSrtQ-nbqkrzJNCUSlbGy6u_obI",
+    "05_MARKETING/Wizualizacje_3D": "1VC8-cIW9K5vy9hl6UBID5NC_rB-VkJjU",
+    "05_MARKETING/Zdjecia_promocyjne": "1ihIAzTY9z6yi4E4oOJ8fRSRAgxmBOzNV",
+    "05_MARKETING/Ulotki_broszury": "12aSeLSobnHdMQBPuKp09Cg50OqXI8aec",
+    "05_MARKETING/Ogloszenia_sprzedazy": "13Ou4Uc5a1owXovDJ7aB8KeWwES2-2kpA",
+    "06_SZABLONY": "132BnBZkpDYbQEWSCcA-9vtzRnIYZwBhT",
+    "07_ARCHIWUM": "1N0UWVfsAGLiuVSE8jvfsK55gL-WRKAHY",
+    "08_IT_INFRASTRUKTURA": "1DBMBJPyVN2V-2VqNTKFMri2jQ669euCt"
+  },
+  "credentials": {
+    "telegram": {
+      "id": "FFfnbLWcIbhrt3Vj",
+      "name": "Telegram account"
+    },
+    "googleDrive": {
+      "id": "p6DN9o3jAMH4ZJSD",
+      "name": "Google Drive account"
+    },
+    "anthropic": {
+      "id": "z0DJqZvJGQ9an9nZ",
+      "name": "Anthropic account"
+    }
+  },
+  "usage_notes": {
+    "javascript": "Użyj w node Function/Code - skopiuj sekcję pathToId do swojego kodu",
+    "example": "const folderId = pathToId[folderPath] || pathToId['00_DO_SORTOWANIA'];"
+  }
+}
