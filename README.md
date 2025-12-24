@@ -1,434 +1,302 @@
-# n8n Workflows - Claude AI Integration
+# 🤖 K2BUD Unified Agent - n8n Workflow
 
-> Repozytorium zawiera zaawansowane workflow n8n do integracji z Claude AI (Anthropic), w tym kompletny system zarządzania dokumentami dla spółki K2BUD.
-
-## 📁 Projekty w tym Repozytorium
-
-### 🌟 **K2BUD Unified Agent** (Główny Projekt)
-
-**Inteligentny organizator dokumentów + AI Chat dla spółki deweloperskiej**
-
-- 🤖 Automatyczna klasyfikacja dokumentów przez Claude AI
-- 📁 Archiwizacja w Google Drive (60+ folderów)
-- 💬 Uniwersalna rozmowa z AI
-- 📱 Integracja z Telegram Bot
-- 🧠 Pamięć konwersacji i bufor tekstu (60s)
-
-**📖 [Zobacz pełną dokumentację → README_K2BUD.md](./README_K2BUD.md)**
-
-**🚀 [Instrukcja instalacji → SETUP_INSTRUCTIONS.md](./SETUP_INSTRUCTIONS.md)**
-
-**Pliki:**
-- `k2bud-unified-agent-workflow.json` - Główny workflow
-- `unified_ai_handler.js` - Handler AI (klasyfikacja + chat)
-- `context_manager.js` - Zarządzanie pamięcią
-- `google_drive_folder_mapping.json` - Mapowanie folderów
-- `test-webhook-k2bud.js` - Testy
+> **Inteligentny agent do zarządzania dokumentami spółki deweloperskiej K2BUD**
+> Automatyczna klasyfikacja, archiwizacja i chat AI w jednym workflow
 
 ---
 
-### 💬 **Claude API Chat Workflows** (Przykłady)
+## 📂 Struktura Repo
 
-Proste workflow do rozmowy z Claude API przez n8n.
-
-**Workflow 1: Basic Chat**
-- Pojedyncze zapytania do Claude
-- Manual trigger
-- Prosty request/response
-
-**Workflow 2: Conversation with History**
-- Wieloturowe rozmowy
-- Webhook trigger
-- Pamięć konwersacji (ostatnie 10 wiadomości)
-
-**Pliki:**
-- `claude-chat-workflow.json` - Prosty workflow
-- `claude-chat-conversation-workflow.json` - Z historią konwersacji
-- `test-webhook.js` / `test-webhook.py` - Skrypty testowe
-
----
-
-## 🚀 Szybki Start
-
-### Dla K2BUD Unified Agent
-
-```bash
-# 1. Zobacz szczegółową dokumentację
-cat README_K2BUD.md
-
-# 2. Przeczytaj instrukcję instalacji
-cat SETUP_INSTRUCTIONS.md
-
-# 3. Skopiuj i uzupełnij konfigurację
-cp .env.example .env
-nano .env
-
-# 4. Zaimportuj workflow do n8n
-# (przez UI: Import from File → k2bud-unified-agent-workflow.json)
-
-# 5. Testuj system
-node test-webhook-k2bud.js
+```
+n8n/
+├── k2bud-final-working.json              # ✅ DZIAŁAJĄCY WORKFLOW (importuj do n8n)
+├── google_drive_folder_mapping_real.json # Prawdziwe ID folderów Google Drive
+│
+├── README.md                              # Ten plik
+├── README_K2BUD.md                        # Szczegółowa dokumentacja K2BUD
+│
+├── CORRECT_PATTERN.md                     # Dlaczego HTTP Request > Code API call
+├── BUILD_GUIDE_SIMPLE.md                  # Prosty przewodnik budowy (30 min)
+├── QUICK_FIX.md                           # Wyjaśnienie błędów składni n8n
+│
+├── .env.example                           # Szablon zmiennych środowiskowych
+└── .gitignore                             # Wykluczenia git
 ```
 
-### Dla Claude Chat (prosty)
+---
+
+## 🎯 O Projekcie
+
+**K2BUD Unified Agent** to workflow n8n który łączy:
+- 📁 **Automatyczną klasyfikację dokumentów** (faktury, zdjęcia budowy, umowy)
+- 💬 **Inteligentnego asystenta AI** (Claude Sonnet 4.5)
+- 💾 **Upload do Google Drive** z 60+ strukturą folderów
+- 📱 **Telegram Bot** jako interfejs użytkownika
+
+### Przykłady Użycia
+
+**Zdjęcie z budowy:**
+```
+Użytkownik: [zdjęcie] "ściany dom A"
+Bot: ✅ Plik zapisany!
+     📁 03_PROJEKTY/.../Zdjecia_postep_prac/
+     📄 20241224_FOTO_SCIANY_Dom_A_001.jpg
+```
+
+**Faktura:**
+```
+Użytkownik: [PDF] "materiały budowlane"
+Bot: ✅ Faktura zapisana!
+     📁 03_PROJEKTY/.../Faktury_budowa/
+     📄 20241215_FZ_BudPol_Fundamenty_15000PLN.pdf
+```
+
+**Chat:**
+```
+Użytkownik: "Gdzie zapisują się faktury?"
+Bot: Faktury budowlane trafiają do folderu
+     03_PROJEKTY/Projekt_01_Agatowa_Sieroslaw/03_Realizacja/Faktury_budowa
+```
+
+---
+
+## ✨ Funkcje
+
+### 📁 Klasyfikacja Dokumentów
+- **Automatyczna klasyfikacja** - Claude AI analizuje zawartość pliku (nie nazwę!)
+- **60+ folderów** - pełna struktura spółki K2BUD
+- **Konwencja nazewnictwa** - `RRRRMMDD_TYP_SZCZEGÓŁY.ext`
+- **Typy dokumentów:** PDF, JPEG, PNG, DOCX, XLSX
+
+### 💬 Chat AI
+- **Model:** Claude Sonnet 4.5 (najnowszy!)
+- **Historia:** 10 ostatnich wiadomości
+- **Context-aware:** wie o strukturze K2BUD
+
+### 🔧 Zaawansowane
+- **Text Buffer (60s):** wyślij opis przed plikiem
+- **Komendy:** `/help`, `/status`
+- **Error handling:** automatyczne
+
+---
+
+## 🚀 Quick Start (5 minut)
+
+### 1. Wymagania
+
+- ✅ n8n (self-hosted lub cloud)
+- ✅ Telegram Bot Token (BotFather)
+- ✅ Claude API Key (Anthropic)
+- ✅ Google Drive (OAuth2)
+
+### 2. Import
 
 ```bash
-# 1. Ustaw klucz API
-export ANTHROPIC_API_KEY=sk-ant-api03-your-key-here
+# Otwórz n8n → Workflows → Import from File
+# Wybierz: k2bud-final-working.json
+```
 
-# 2. Zaimportuj workflow do n8n
-# (claude-chat-conversation-workflow.json)
+### 3. Credentials
 
-# 3. Testuj
-node test-webhook.js
+Skonfiguruj 3 credentials w n8n:
+- **Telegram:** Bot Token
+- **Anthropic:** API Key
+- **Google Drive:** OAuth2
+
+### 4. Folder IDs
+
+```bash
+# Otwórz node "Map Folder Path to ID"
+# Zamień FOLDER_ID_PLACEHOLDER_XX na prawdziwe ID
+# (możesz skopiować z google_drive_folder_mapping_real.json)
+```
+
+### 5. Aktywuj
+
+```bash
+# n8n → Workflow → Active: ON
+```
+
+### 6. Test
+
+```
+Telegram → twój bot → /help
 ```
 
 ---
 
 ## 📚 Dokumentacja
 
-### K2BUD Unified Agent
+### Dla Użytkowników
 
-| Dokument | Opis |
-|----------|------|
-| [README_K2BUD.md](./README_K2BUD.md) | Główna dokumentacja projektu K2BUD |
-| [SETUP_INSTRUCTIONS.md](./SETUP_INSTRUCTIONS.md) | Szczegółowa instrukcja instalacji (krok po kroku) |
-| [unified_ai_handler.js](./unified_ai_handler.js) | Kod handlera AI z komentarzami |
-| [context_manager.js](./context_manager.js) | Kod context managera |
+- **`README_K2BUD.md`** - Pełna dokumentacja K2BUD (struktura, konwencja, przykłady)
 
-### Claude Chat Examples
+### Dla Developerów
 
-Podstawowe przykłady użycia Claude API w n8n (zobacz stary README dla szczegółów).
+- **`CORRECT_PATTERN.md`** - ⭐ **Przeczytaj najpierw!** Wyjaśnia best practices n8n
+  - ✅ HTTP Request z credentials (CORRECT)
+  - ❌ Code z API call (WRONG - anti-pattern)
 
----
+- **`BUILD_GUIDE_SIMPLE.md`** - Przewodnik budowy workflow (~30 min)
+  - Pattern: Prepare → HTTP Request → Parse
+  - Copy-paste ready
 
-## 🔑 Wymagane Klucze API
-
-### Dla K2BUD Unified Agent
-
-1. **Telegram Bot Token**
-   - Uzyskaj: @BotFather w Telegram
-   - Format: `123456789:ABCdefGHIjklMNOpqrsTUVwxyz`
-
-2. **Anthropic API Key**
-   - Uzyskaj: https://console.anthropic.com/
-   - Format: `sk-ant-api03-...`
-
-3. **Google Drive Service Account**
-   - Uzyskaj: https://console.cloud.google.com/
-   - Format: JSON file
-
-### Dla Claude Chat (prosty)
-
-1. **Anthropic API Key** (jak wyżej)
-
----
-
-## 🏗️ Architektura
-
-### K2BUD Unified Agent
-
-```
-┌─────────────────┐
-│  Telegram Bot   │
-│   (Trigger)     │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Context Manager │ ← Bufor tekstu (60s)
-│                 │ ← Historia konwersacji
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│     Router      │
-│ (Switch Logic)  │
-└─┬───┬───┬───────┘
-  │   │   │
-  │   │   └─────────────┐
-  │   │                 │
-  ▼   ▼                 ▼
-┌───┐ ┌───┐       ┌──────┐
-│FILE│ │CHAT│      │COMMAND│
-└─┬─┘ └─┬─┘       └──┬───┘
-  │     │             │
-  ▼     ▼             ▼
-┌──────────────────────────┐
-│  Unified AI Handler      │
-│  (Claude API)            │
-│  - Klasyfikacja          │
-│  - Rozmowa               │
-│  - Komendy               │
-└──────────┬───────────────┘
-           │
-    ┌──────┴──────┐
-    │             │
-    ▼             ▼
-┌─────────┐  ┌─────────┐
-│ Google  │  │Telegram │
-│  Drive  │  │Response │
-└─────────┘  └─────────┘
-```
-
-### Claude Chat (prosty)
-
-```
-Webhook → HTTP Request (Claude API) → Response
-```
-
----
-
-## 💰 Szacowane Koszty
-
-### K2BUD Unified Agent
-
-| Operacja | Model | Koszt |
-|----------|-------|-------|
-| Klasyfikacja pliku | claude-3-5-haiku | ~$0.001-0.003 |
-| Rozmowa (avg) | claude-3-5-sonnet | ~$0.005-0.01 |
-| **Miesięcznie** (100 plików + 200 wiadomości) | Mix | **~$2-5 USD** |
-
-### Claude Chat
-
-| Operacja | Koszt |
-|----------|-------|
-| Pojedyncza wiadomość | ~$0.005-0.01 |
-| Miesięcznie (200 wiadomości) | ~$1-2 USD |
-
-*Ceny na grudzień 2024. Sprawdź aktualne: https://www.anthropic.com/pricing*
+- **`QUICK_FIX.md`** - Troubleshooting:
+  - `$node.getWorkflowStaticData` vs `$getWorkflowStaticData`
+  - Błędy credentials
+  - Debugging n8n
 
 ---
 
 ## 🛠️ Technologie
 
-- **n8n** - Workflow automation platform
-- **Claude AI** (Anthropic) - Large Language Model
-  - `claude-3-5-haiku-20241022` - Klasyfikacja
-  - `claude-3-5-sonnet-20241022` - Chat
-- **Telegram Bot API** - Messaging interface
-- **Google Drive API** - File storage
-- **Node.js** - Runtime environment
+### Core
+- **n8n** - Workflow automation
+- **Claude AI (Anthropic)**:
+  - `claude-3-5-haiku-20241022` - klasyfikacja (szybki, tani)
+  - `claude-sonnet-4-5-20250929` - chat (inteligentny)
+- **Telegram Bot API** - UI
+- **Google Drive API** - Storage
 
----
-
-## 📦 Struktura Repozytorium
-
-```
-n8n/
-├── README.md                                  # Ten plik
-├── README_K2BUD.md                           # Dokumentacja K2BUD
-├── SETUP_INSTRUCTIONS.md                     # Instrukcja instalacji K2BUD
-│
-├── k2bud-unified-agent-workflow.json         # ⭐ Główny workflow K2BUD
-├── unified_ai_handler.js                     # Handler AI (klasyfikacja + chat)
-├── context_manager.js                        # Context manager
-├── google_drive_folder_mapping.json          # Mapowanie folderów (60+)
-├── test-webhook-k2bud.js                     # Testy K2BUD
-│
-├── claude-chat-workflow.json                 # Prosty chat workflow
-├── claude-chat-conversation-workflow.json    # Chat z historią
-├── test-webhook.js                           # Test chat (Node.js)
-├── test-webhook.py                           # Test chat (Python)
-│
-├── .env.example                              # Przykład konfiguracji
-└── .gitignore                                # Git ignore rules
-```
-
----
-
-## 🎯 Główne Funkcje
-
-### K2BUD Unified Agent
-
-✅ **Automatyczna organizacja dokumentów**
-- Inteligentna klasyfikacja przez Claude AI
-- 60+ folderów w Google Drive
-- Konwencja nazewnictwa: `YYYY-MM-DD_Kategoria_Opis_v1.ext`
-
-✅ **Uniwersalna rozmowa**
-- Pytania o dokumenty, strukturę, projekty
-- Analiza plików (zdjęcia, PDF, dokumenty)
-- Pamięć ostatnich 10 wiadomości
-
-✅ **Integracja Telegram**
-- Wysyłaj pliki z telefonu
-- Caption lub bufor tekstu (60s) jako opis
-- Natychmiastowe potwierdzenie z linkiem
-
-✅ **Komendy pomocnicze**
-- `/help` - Pomoc
-- `/status` - Status systemu
-- `/archive` - Wymuszona archiwizacja
-
-### Claude Chat (prosty)
-
-✅ Podstawowa rozmowa z Claude API
-✅ Historia konwersacji (10 wiadomości)
-✅ Webhook trigger
-✅ JSON responses
-
----
-
-## 🧪 Testowanie
-
-### K2BUD
-
-```bash
-# Automatyczne testy
-node test-webhook-k2bud.js
-
-# Testy manualne (Telegram)
-1. /help
-2. "Cześć! Jak działasz?"
-3. [wyślij zdjęcie] + caption: "postęp prac"
-```
-
-### Claude Chat
-
-```bash
-# Node.js
-node test-webhook.js
-
-# Python
-python test-webhook.py
-```
-
----
-
-## 🔒 Bezpieczeństwo
-
-### Best Practices
-
-✅ **DO:**
-- Używaj `.env` dla kluczy API
-- Service Account dla Google Drive
-- Regularny backup workflow
-- Monitoruj koszty API
-
-❌ **DON'T:**
-- Nie commituj `.env` do git
-- Nie udostępniaj Bot Token publicznie
-- Nie używaj personal account w production
-
-### Whitelist (opcjonalnie)
-
-W `context_manager.js`:
+### Pattern: HTTP Request > Code ✅
 
 ```javascript
-const ALLOWED_CHAT_IDS = [123456789, 987654321];
-if (!ALLOWED_CHAT_IDS.includes(chatId)) {
-  return { error: 'Unauthorized' };
-}
+// ✅ POPRAWNIE - TEN PATTERN!
+
+// 1. Code: Prepare
+return { json: { requestBody: {...} } };
+
+// 2. HTTP Request: Call API
+// Credentials: Anthropic API ← z vault n8n!
+// Body: {{ JSON.stringify($json.requestBody) }}
+
+// 3. Code: Parse
+const response = $input.first().json;
+return { json: { result: response.content[0].text } };
+```
+
+**Dlaczego?**
+- ✅ Credentials w vault (bezpieczne)
+- ✅ Reusable
+- ✅ Error handling (auto retry)
+- ✅ Debugging (widoczne w UI)
+- ✅ Best practice n8n
+
+---
+
+## 📊 Architektura
+
+```
+Telegram Trigger
+    ↓
+Context Manager (Code)
+  • Wykrywa: file/text/command
+  • Buffer (60s)
+  • Historia
+    ↓
+Router (Switch)
+  • hasDocument → Output 0
+  • hasPhoto    → Output 1
+  • isCommand   → Output 2
+  • fallback    → Output 3
+    ↓
+┌───────┬──────────┬──────────┬─────────┐
+│  DOC  │  PHOTO   │ COMMAND  │  CHAT   │
+│ FLOW  │  FLOW    │  FLOW    │  FLOW   │
+└───┬───┴─────┬────┴─────┬────┴────┬────┘
+    │         │          │         │
+    └─────────┴──────────┴─────────┘
+                 ↓
+        Send Telegram Response
+```
+
+### Document Flow (Output 0)
+```
+Extract File Info → Download → Prepare for AI →
+Merge Binary → Unified AI Handler →
+Claude API Call (HTTP Request!) →
+Parse Response → Map Folder → Merge Binary →
+Upload to Drive → Success Message
+```
+
+### Chat Flow (Output 3)
+```
+Prepare for Chat → Unified AI Handler (Chat) →
+Claude API Call (HTTP Request!) →
+Parse Response → Prepare Response → Send
 ```
 
 ---
 
-## 🐛 Troubleshooting
+## 💡 Best Practices
 
-### K2BUD
+### n8n Development
 
-**Bot nie odpowiada:**
-```bash
-# Sprawdź webhook
-curl https://api.telegram.org/bot<TOKEN>/getWebhookInfo
-```
+1. ✅ **HTTP Request + credentials** zamiast Code z API call
+2. ✅ **Separation:** Prepare → Call → Parse (nie all-in-one)
+3. ✅ **Static Data:** `$getWorkflowStaticData('global')` NIE `$node...`
+4. ✅ **Error handling:** Zawsze sprawdzaj czy dane istnieją
+5. ✅ **Debugging:** `console.log` w Code (widoczne w logs)
 
-**Błąd klasyfikacji:**
-- Sprawdź `ANTHROPIC_API_KEY` w `.env`
-- Zobacz logi w n8n Executions
-- Dodaj więcej kontekstu w opisie pliku
+### Claude API
 
-**Plik nie zapisuje się:**
-- Zweryfikuj Folder ID w mapping
-- Sprawdź uprawnienia Service Account
-- Sprawdź Google Drive API
+1. **Model selection:**
+   - Haiku → klasyfikacja, proste (tani)
+   - Sonnet → chat, złożone (droższy)
 
-### Claude Chat
-
-**API Error:**
-- Sprawdź czy klucz jest poprawny
-- Sprawdź czy masz credits w Anthropic
-- Zobacz n8n error logs
+2. **Vision:**
+   - PDF: `type: document` (Claude czyta PDF natywnie!)
+   - Obrazy: `type: image` + base64
 
 ---
 
-## 📖 Więcej Informacji
+## 📊 Koszty
 
-### K2BUD Unified Agent
+**Claude API (przykład):**
+- 500 dokumentów/miesiąc: ~$0.50
+- 200 rozmów/miesiąc: ~$2.00
+- **Razem:** ~$2-3 / miesiąc
 
-- **Pełna dokumentacja:** [README_K2BUD.md](./README_K2BUD.md)
-- **Setup guide:** [SETUP_INSTRUCTIONS.md](./SETUP_INSTRUCTIONS.md)
-- **Plan implementacji:** Zobacz plan w komentarzach workflow
-
-### External Resources
-
-- **n8n Docs:** https://docs.n8n.io/
-- **Claude API:** https://docs.anthropic.com/
-- **Telegram Bot API:** https://core.telegram.org/bots/api
-- **Google Drive API:** https://developers.google.com/drive
+**Google Drive:**
+- Storage: 15 GB za darmo
+- API: Unlimited (w rozsądnych limitach)
 
 ---
 
-## 🤝 Wsparcie
+## 🔐 Bezpieczeństwo
 
-### Community
+- ✅ Credentials w n8n vault (nie w kodzie!)
+- ✅ OAuth2 dla Google Drive
+- ✅ Rate limiting
+- ✅ Input validation
+- ✅ Folder IDs hardcoded
 
-- n8n Community: https://community.n8n.io/
-- Anthropic Discord: https://discord.gg/anthropic
-
-### Issues
-
-Jeśli napotkasz problemy:
-1. Sprawdź [Troubleshooting](#troubleshooting)
-2. Zobacz [SETUP_INSTRUCTIONS.md](./SETUP_INSTRUCTIONS.md)
-3. Stwórz issue w repozytorium
-
----
-
-## 📄 Licencja
-
-MIT License - możesz swobodnie używać i modyfikować.
+**NIE commituj:**
+- `.env` z kluczami
+- `credentials.json`
+- Service account keys
 
 ---
 
-## ✨ Co Dalej?
+## 📝 Changelog
 
-### 1. Dla K2BUD Unified Agent
-
-**Zacznij tutaj:**
-```bash
-# 1. Przeczytaj dokumentację
-cat README_K2BUD.md
-
-# 2. Postępuj zgodnie z instrukcją
-cat SETUP_INSTRUCTIONS.md
-
-# 3. Zaimportuj workflow
-# (w n8n UI)
-
-# 4. Testuj
-node test-webhook-k2bud.js
-```
-
-### 2. Dla Claude Chat (prosty)
-
-**Szybki test:**
-```bash
-# 1. Ustaw klucz API
-export ANTHROPIC_API_KEY=sk-ant-...
-
-# 2. Zaimportuj workflow
-# (claude-chat-conversation-workflow.json)
-
-# 3. Testuj
-node test-webhook.js
-```
+### v1.0.0 (2024-12-24)
+- ✅ Initial release
+- ✅ Document classification (PDF, images, DOCX)
+- ✅ Chat AI (Claude Sonnet 4.5)
+- ✅ 60+ folder structure
+- ✅ Text buffer (60s)
+- ✅ Telegram interface
 
 ---
 
-**Wybierz swój projekt i zacznij! 🚀**
+## 🙏 Credits
 
-Dla spółki K2BUD → Zobacz [README_K2BUD.md](./README_K2BUD.md)
+- **Anthropic** - Claude AI
+- **n8n** - Workflow platform
+- **Google** - Drive storage
+- **Telegram** - Bot API
 
-Dla prostego chat → Użyj `claude-chat-conversation-workflow.json`
+---
+
+**Made with ❤️ for K2BUD** 🏗️
